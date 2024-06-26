@@ -1,4 +1,4 @@
-# workflow의 이름
+ # workflow의 이름
 name: CD
 
 # 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
@@ -56,6 +56,10 @@ jobs:
 
 
        # Deploy
+      - name: Make a bundle for CodeDeploy
+        run: zip -r ./$GITHUB_SHA.zip appspec.yml ./springbootcamp-$GITHUB_SHA.jar scripts/
+        shell: bash
+       
       - name: Deploy
         run: |
           aws deploy create-deployment \
