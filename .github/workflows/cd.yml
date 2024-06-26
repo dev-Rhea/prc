@@ -49,6 +49,17 @@ jobs:
       # script files 복사
       - name: Copy script
         run: cp ./*.sh ./deploy
+
+       # Deploy
+      - name: Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name rhea-CICD \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name rhea-CICD-prc \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=rhea-bucket,bundleType=zip,key=prc/$GITHUB_SHA.zip \
+          --region ap-northeast-2 \
       
       # S3에 업로드
       - name: Upload to S3
